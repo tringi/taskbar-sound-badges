@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="App.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.info" />
+    <None Include="..\Common\Windows\Windows_Symbol.tcc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Common\Windows\Windows_Symbol.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="App.rc" />
+    <ResourceCompile Include="App-vi.rc" />
+  </ItemGroup>
+</Project>

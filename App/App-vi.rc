@@ -1,0 +1,29 @@
+#include <windows.h>
+ 
+1 VERSIONINFO
+FILEVERSION        0,9,0,164
+PRODUCTVERSION     0,9,0,164
+FILEFLAGSMASK      VS_FFI_FILEFLAGSMASK
+FILEFLAGS          0    
+FILETYPE           VFT_APP
+{
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "040904B0"
+        {
+            VALUE L"OriginalFilename", L"TbSndBg64.exe"
+            VALUE L"CompanyName", L"TRIM CORE SOFTWARE s.r.o."
+            VALUE L"LegalCopyright", L"\x00a9 2021 TRIM CORE SOFTWARE s.r.o."
+            VALUE L"FileVersion", L"0.9.0.164"
+            VALUE L"FileDescription", L"Taskbar Sound Badges Application"
+            VALUE L"ProductName", L"Taskbar Sound Badges"
+            VALUE L"ProductVersion", L"0.9"
+        }
+    }
+    BLOCK "VarFileInfo"
+    {
+        VALUE "Translation", 0x0409, 1200
+    }
+}
+ 
+1 24 L"D:\\Projekty\\AudioTaskbar\\App\\\\App.manifest"

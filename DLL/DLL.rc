@@ -1,0 +1,7 @@
+#include <windows.h>
+
+STRINGTABLE
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+{
+    1   "Playing sound"
+}

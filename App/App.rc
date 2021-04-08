@@ -1,0 +1,37 @@
+#include <Windows.h>
+
+1 ICON "../mat/ico1.ico"
+2 ICON "../mat/ico2.ico"
+3 ICON "../mat/ico3.ico"
+
+1 MENU
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+{
+    POPUP ""
+    {
+        MENUITEM "&About…", 0xF1
+        MENUITEM "Open &www.trimcore.cz…", 0xFA
+        MENUITEM SEPARATOR
+        MENUITEM "System badges", 0x11
+        MENUITEM "Light badges", 0x12
+        MENUITEM "Dark badges", 0x13
+        MENUITEM SEPARATOR
+        MENUITEM "&Hide icon, but keep running", 0xFE
+        MENUITEM "Exi&t", 0xFF
+    }
+}
+
+STRINGTABLE
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+{
+    0x01    "Application playing:"
+    0x02    "%u apps playing:"
+
+
+    0x10    "This program instruments standard Windows Taskbar to ... TBD TBD"
+    0x11    "Xxxxxxxx xxx .\n\n"
+    0x12    "Command-line parameters:\n"
+    0x13   " • hide – starts without tray icon or hides existing one\n"
+    0x14   " • show – restores tray icon of the running program, if any\n"
+    0x15   " • terminate – closes running instance\n"
+}

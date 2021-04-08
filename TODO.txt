@@ -1,0 +1,25 @@
+﻿TODO
+====
+
+ukládat a načítat nastavený typ badge
+
+ikony:
+- hlavní: stín overlay repráčku, modrý pruh pod (jako mají na taskbaru)
+- badge: stín!
+
+seznam ignorovaných procesů
+
+nastavení zda zobrazovat exe/pid/název procesů co hrajou v nid.szTip
+
+dodělat FormatMessage pro chyby
+
+dodělat přepnutí na správný proces: SwitchToProperProcess
+
+mute na kliknutí, nějak???
+
+zobrazit stav "mute" dočasně???
+
+automaticky měnit dark/light badge podle schématu
+
+systémové zvuky přes ikonu Start?
+
