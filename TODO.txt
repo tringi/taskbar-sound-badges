@@ -1,25 +1,33 @@
 ﻿TODO
 ====
 
-ukládat a načítat nastavený typ badge
+remember badge type (registry)
+ - automatically select dark/light yellow according to system light/dark scheme
 
-ikony:
-- hlavní: stín overlay repráčku, modrý pruh pod (jako mají na taskbaru)
-- badge: stín!
+add (and remember) list of ignored processes
 
-seznam ignorovaných procesů
+add option what to show in tray tooltip
+ - show PID
+ - show EXE
+ - app name (GetFileVersionInfo)
 
-nastavení zda zobrazovat exe/pid/název procesů co hrajou v nid.szTip
+use FormatMessage to show proper error
+ - use response result from 
 
-dodělat FormatMessage pro chyby
+finish SwitchToProperProcess
 
-dodělat přepnutí na správný proces: SwitchToProperProcess
+report system sounds through layered overlay window (badge) over Start button
 
-mute na kliknutí, nějak???
+in multiprocess apps, track connection between one playing sound and one displaying GUI
+ - i.e. Chrome
+ - follow PID tree?
 
-zobrazit stav "mute" dočasně???
+main icon: add shadow to the speaker badge icon
+main icon: add blue (?) line to the bottom, like active taskbar button
 
-automaticky měnit dark/light badge podle schématu
+badge icons: shadow
 
-systémové zvuky přes ikonu Start?
+figure out way to mute app from taskbar button that won't interfere
+
+show "mute" badge for a few seconds when app gets muted ???
 
