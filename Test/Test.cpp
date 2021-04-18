@@ -193,7 +193,7 @@ int main () {
                     HRESULT res = session->IsSystemSoundsSession ();
                     if (res == S_OK) {
                         // system
-                        // std::printf ("system");
+                        std::printf ("system");
 
                     } else {
                         session->GetProcessId (&pid);
@@ -202,7 +202,7 @@ int main () {
                     }
                 }
 
-                if (pid) {
+                if (pid || true) {
 
                     AudioSessionState state;
                     session->GetState (&state);
@@ -229,14 +229,39 @@ int main () {
                         std::printf ("- - - - - ");
                     }
 
-                    //GetGroupingParam
+                    GUID group;
+                    if (session->GetGroupingParam (&group) == S_OK) {
+                        std::printf ("{%08x-%04x-%04x-%02x%02x%02x%02x%02x%02x%02x%02x} ",
+                                     group.Data1, group.Data2, group.Data3,
+                                     group.Data4 [0], group.Data4 [1], group.Data4 [2], group.Data4 [3],
+                                     group.Data4 [4], group.Data4 [5], group.Data4 [6], group.Data4 [7]);
+                    }
 
-                    /* LPWSTR nnn = NULL;
+                    if (pid) {
+                        wchar_t exe [2 * MAX_PATH] = {};
+                        if (auto handle = OpenProcess (PROCESS_QUERY_LIMITED_INFORMATION, FALSE, pid)) {
+                            DWORD n = sizeof exe / sizeof exe [0];
+                            if (QueryFullProcessImageName (handle, 0, exe, &n)) {
+                                std::printf ("%ls", exe);
+                            }
+                            CloseHandle (handle);
+                        }
+                    }
+
+                    /*LPWSTR nnn = NULL;
                     if (session->GetDisplayName (&nnn) == S_OK) {
                         std::printf (" // %ls", nnn);
                         CoTaskMemFree (nnn);
                     };
                     if (session->GetIconPath (&nnn) == S_OK) {
+                        std::printf (" // %ls", nnn);
+                        CoTaskMemFree (nnn);
+                    };// */
+                    /*if (session->GetSessionIdentifier (&nnn) == S_OK) {
+                        std::printf (" // %ls", nnn);
+                        CoTaskMemFree (nnn);
+                    };
+                    if (session->GetSessionInstanceIdentifier (&nnn) == S_OK) {
                         std::printf (" // %ls", nnn);
                         CoTaskMemFree (nnn);
                     };// */
