@@ -22,6 +22,8 @@
 #pragma warning (disable:26812) // unscoped enum warning
 #pragma warning (disable:28159) // GetTickCount() warning
 
+#define AUDCLNT_S_NO_SINGLE_PROCESS AUDCLNT_SUCCESS (0x00d)
+
 extern "C" IMAGE_DOS_HEADER __ImageBase;
 
 namespace {
@@ -490,16 +492,15 @@ namespace {
         PostMessage (hWnd, WM_NULL, 0, 0);
     }
 
+    DWORD tray = ERROR_IO_PENDING;
+    IMMDeviceEnumerator * deviceEnumerator = NULL;
+
     struct Entry {
         bool    playing; // state whether PID is playing
         USHORT  windows; // number of windows of the PID
         DWORD   t;
     };
-
-    IMMDeviceEnumerator * deviceEnumerator = NULL;
-    std::map <DWORD, Entry> data; 
-
-    DWORD tray = ERROR_IO_PENDING;
+    std::map <DWORD, Entry> data;
 
     void update () {
         if (nid.uID) {
@@ -541,18 +542,24 @@ namespace {
                         // executable name
 
                         wchar_t exe [2 * MAX_PATH] = {};
-                        if (auto handle = OpenProcess (PROCESS_QUERY_LIMITED_INFORMATION, FALSE, pid)) {
-                            DWORD n = sizeof exe / sizeof exe [0];
-                            if (QueryFullProcessImageName (handle, 0, exe, &n)) {
-                                if (auto basename = std::wcsrchr (exe, L'\\')) {
-                                    std::wmemmove (exe, basename + 1, n - (basename - exe));
-                                }
-                            }
-                            CloseHandle (handle);
-                        }
 
-                        if (!exe [0]) {
-                            _snwprintf (exe, 12, L"#%u", pid);
+                        if (pid) {
+                            if (auto handle = OpenProcess (PROCESS_QUERY_LIMITED_INFORMATION, FALSE, pid)) {
+                                DWORD n = sizeof exe / sizeof exe [0];
+                                if (QueryFullProcessImageName (handle, 0, exe, &n)) {
+                                    if (auto basename = std::wcsrchr (exe, L'\\')) {
+                                        std::wmemmove (exe, basename + 1, n - (basename - exe));
+                                    }
+                                }
+                                CloseHandle (handle);
+                            }
+
+                            if (!exe [0]) {
+                                _snwprintf (exe, 12, L"#%u", pid);
+                            }
+                        } else {
+                            // TODO: load "System Sounds" text from session->GetDisplayName
+                            _snwprintf (exe, 12, L"System");
                         }
 
                         // format row
@@ -728,6 +735,7 @@ namespace {
                 if (wParam == 1) {
                     auto t = GetTickCount ();
                     bool change = false;
+                    bool system_playing = false;
 
                     // TODO: use registration callbacks instead of enumeration
 
@@ -757,27 +765,31 @@ namespace {
                                                         IAudioSessionControl2 * session = NULL;
                                                         if (SUCCEEDED (ctrl->QueryInterface (&session))) {
 
-                                                            DWORD pid = 0;
-                                                            if ((session->IsSystemSoundsSession () != S_OK) && SUCCEEDED (session->GetProcessId (&pid)) && (pid != 0)) {
+                                                            AudioSessionState audioState;
+                                                            if (SUCCEEDED (session->GetState (&audioState))) {
 
-                                                                AudioSessionState audioState;
-                                                                if (SUCCEEDED (session->GetState (&audioState))) {
-
-                                                                    // check previous state
-
-                                                                    auto active = (audioState == AudioSessionStateActive);
-                                                                    auto & state = data [pid];
-                                                                    
-                                                                    if (active) {
-                                                                        state.t = t;
-                                                                        change = true;
+                                                                if (session->IsSystemSoundsSession () == S_OK) {
+                                                                    if (audioState == AudioSessionStateActive) {
+                                                                        system_playing = true;
                                                                     }
-                                                                    if (state.playing != active) {
-                                                                        state.playing = active;
-                                                                        state.windows = 0;
-                                                                        change = true;
+                                                                } else {
+                                                                    DWORD pid = 0;
+                                                                    if (SUCCEEDED (session->GetProcessId (&pid)) && (pid != 0)) {
 
-                                                                        EnumWindows (notify, LPARAM (pid));
+                                                                        auto active = (audioState == AudioSessionStateActive);
+                                                                        auto & state = data [pid];
+
+                                                                        if (active) {
+                                                                            state.t = t;
+                                                                            change = true;
+                                                                        }
+                                                                        if (state.playing != active) {
+                                                                            state.playing = active;
+                                                                            state.windows = 0;
+                                                                            change = true;
+
+                                                                            EnumWindows (notify, LPARAM (pid));
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -796,6 +808,11 @@ namespace {
                             }
                         }
                         deviceCollection->Release ();
+                    }
+                    if (data [0].playing != system_playing) {
+                        data [0].playing = system_playing;
+                        data [0].t = t;
+                        change = true;
                     }
                     if (change) {
                         update ();
