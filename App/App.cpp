@@ -322,8 +322,8 @@ int APIENTRY wWinMain (_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPWSTR
                     nid.dwStateMask = NIS_HIDDEN;
 
                     // exit when parent process exist
-                    RegisterWaitForSingleObject (&wait, (HANDLE) std::wcstoull (argw [argument], nullptr, 16), MasterTaskExit, NULL, INFINITE,
-                                                 WT_EXECUTEINWAITTHREAD | WT_EXECUTELONGFUNCTION | WT_EXECUTEONLYONCE);
+                    RegisterWaitForSingleObject (&wait, (HANDLE) std::wcstoull (argw [argument], nullptr, 16),
+                                                 MasterTaskExit, NULL, INFINITE, WT_EXECUTEINWAITTHREAD | WT_EXECUTEONLYONCE);
                     break;
 
                 default:
