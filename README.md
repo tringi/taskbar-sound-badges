@@ -1,19 +1,19 @@
 # Taskbar Sound Badges
-*Small program that monitors which applications are currently playing sound, and sets Taskbar Badge on icons of those that do.*
+*Small program that monitors which applications are currently playing sound, and sets Taskbar Badge on their icons.*
 
-**This is a preview version.**
+:construction: **This is a preview version.** See caveats below.
 
 ## Installation and configuration
 
 No installer is currently provided. Build and copy ALL EXE/DLL files where appropriate (typically Program Files) and start the right one:
-* TbSndBg32.exe on 32-bit Windows
-* TbSndBg64.exe on 64-bit Windows
-* and TbSngBgAA.exe on ARM64 Windows.
+* TbSndBg32.exe on x86-32 (32-bit Intel/AMD) Windows
+* TbSndBg64.exe on x86-64 (64-bit Intel/AMD) Windows
+* TbSngBgAA.exe on AArch64 (ARM64) Windows
 
-Note that executables for other architectures are still required to be present.  
-Starting a wrong executable may start, but will not work properly.
+Note that executables for other architectures are still required for the software to fully work.  
+A wrong executable may start, but it will not work properly.
 
-Make sure to have Taskbar Badges enabled in Settings.
+:grey_exclamation: Make sure to have Taskbar Badges enabled in Settings.
 
 The program adds Notification Area (tray) icon through which some functionality is accessed and the program can be exited.
 
